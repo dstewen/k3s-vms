@@ -27,7 +27,7 @@ spec:
     keepHistory: false
   values:
     defaultPodOptions:
-      affinity:
+#      affinity:
 #        nodeAffinity:
 #          requiredDuringSchedulingIgnoredDuringExecution:
 #            nodeSelectorTerms:

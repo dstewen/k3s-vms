@@ -44,13 +44,6 @@ spec:
 #                operator: In
 #                values:
 #                - worker
-      annotations:
-        k8s.v1.cni.cncf.io/networks: |
-          [{
-            "name":"multus-iot",
-            "namespace": "kube-system",
-            "ips": ["172.16.20.98/24"]
-          }]
     controllers:
       netshoot:
         annotations:
@@ -78,6 +71,13 @@ spec:
                 add:
                   - NET_ADMIN
         pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name":"multus-iot",
+                "namespace": "kube-system",
+                "ips": ["172.16.20.99/24"]
+              }]
           securityContext:
             runAsUser: 568
             runAsGroup: 568

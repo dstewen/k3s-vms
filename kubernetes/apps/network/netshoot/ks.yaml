@@ -10,8 +10,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: multus
   path: "./kubernetes/apps/network/netshoot/app/"
   prune: true
   sourceRef:

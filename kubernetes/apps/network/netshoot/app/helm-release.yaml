@@ -48,8 +48,6 @@ spec:
             args:
               - "-c"
               - "sleep infinity"
-            annotations:
-              setGateway: "true"
             resources:
               requests:
                 cpu: 5m

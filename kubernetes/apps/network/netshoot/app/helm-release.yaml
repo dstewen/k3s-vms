@@ -44,13 +44,13 @@ spec:
 #                operator: In
 #                values:
 #                - worker
-#      annotations:
-#        k8s.v1.cni.cncf.io/networks: |
-#          [{
-#            "name":"multus-iot",
-#            "namespace": "kube-system",
-#            "ips": ["172.16.20.98/24"]
-#          }]
+      annotations:
+        k8s.v1.cni.cncf.io/networks: |
+          [{
+            "name":"multus-iot",
+            "namespace": "kube-system",
+            "ips": ["172.16.20.98/24"]
+          }]
     controllers:
       netshoot:
         annotations:

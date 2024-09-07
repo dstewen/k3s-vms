@@ -1,0 +1,73 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: netshoot
+  namespace: networking
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.4.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    defaultPodOptions:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: |
+          [{
+            "name":"multus-iot",
+            "namespace": "kube-system",
+            "ips": ["172.16.20.98/24"]
+          }]
+    controllers:
+      netshoot:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        strategy: RollingUpdate
+        containers:
+          app:
+            image:
+              repository: nicolaka/netshoot
+              tag: latest
+            command: "/bin/sh"
+            args:
+              - "-c"
+              - "sleep infinity"
+            annotations:
+              setGateway: "true"
+            resources:
+              requests:
+                cpu: 5m
+                memory: 36M
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                add:
+                  - NET_ADMIN
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            runAsNonRoot: true
+    persistence:
+      config:
+        enabled: true
+        type: emptyDir
+        globalMounts:
+          - path: /.config
